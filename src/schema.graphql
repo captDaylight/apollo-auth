@@ -1,0 +1,9 @@
+# import Trip from "./generated/prisma.graphql"
+
+type Query {
+  trips: [Trip!]!
+}
+
+type Mutation {
+  createTrip: Trip!
+}

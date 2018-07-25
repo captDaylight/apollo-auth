@@ -1,7 +1,12 @@
 const { Prisma } = require('prisma-binding');
 const { GraphQLServer } = require('graphql-yoga');
+const Mutation = require('./src/Mutation');
+const Query = require('./src/Query');
 
-const resolvers = {};
+const resolvers = {
+  Mutation,
+  Query,
+};
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
@@ -14,5 +19,5 @@ const server = new GraphQLServer({
       secret: 'supersecret',
       debug: true,
     })
-  })
+  }),
 });
