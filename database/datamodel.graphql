@@ -1,0 +1,14 @@
+type User {
+  id: ID! @unique
+  email: String! @unique
+  name: String
+  password: String!
+  trips: [Trips!]!
+}
+
+type Trip {
+  id: ID! @unique
+  name: String!
+  description: String
+  users: [Users!]!
+}
