@@ -5,5 +5,5 @@ type Query {
 }
 
 type Mutation {
-  createTrip: Trip!
+  createTrip(name: String!, description: String!): Trip!
 }
