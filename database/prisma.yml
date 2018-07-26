@@ -1,0 +1,8 @@
+endpoint: https://eu1.prisma.sh/paulchristophe6-1adc8b/travel-dev/dev
+datamodel: datamodel.graphql
+secret: mysecret123
+
+# Deploy hook
+hooks:
+  post-deploy:
+    - graphql get-schema --project database
