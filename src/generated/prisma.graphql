@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/paulchristophe6-1adc8b/travel-dev/dev
-# timestamp: Thu Jul 26 2018 10:21:59 GMT-0400 (EDT)
+# timestamp: Fri Jul 27 2018 10:19:21 GMT-0400 (EDT)
 
 type AggregateTrip {
   count: Int!
@@ -86,6 +86,7 @@ type Trip implements Node {
   id: ID!
   name: String!
   description: String
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 """A connection to a list of items."""
@@ -99,6 +100,17 @@ type TripConnection {
 }
 
 input TripCreateInput {
+  name: String!
+  description: String
+  users: UserCreateManyWithoutTripsInput
+}
+
+input TripCreateManyWithoutUsersInput {
+  create: [TripCreateWithoutUsersInput!]
+  connect: [TripWhereUniqueInput!]
+}
+
+input TripCreateWithoutUsersInput {
   name: String!
   description: String
 }
@@ -173,6 +185,32 @@ input TripSubscriptionWhereInput {
 input TripUpdateInput {
   name: String
   description: String
+  users: UserUpdateManyWithoutTripsInput
+}
+
+input TripUpdateManyWithoutUsersInput {
+  create: [TripCreateWithoutUsersInput!]
+  connect: [TripWhereUniqueInput!]
+  disconnect: [TripWhereUniqueInput!]
+  delete: [TripWhereUniqueInput!]
+  update: [TripUpdateWithWhereUniqueWithoutUsersInput!]
+  upsert: [TripUpsertWithWhereUniqueWithoutUsersInput!]
+}
+
+input TripUpdateWithoutUsersDataInput {
+  name: String
+  description: String
+}
+
+input TripUpdateWithWhereUniqueWithoutUsersInput {
+  where: TripWhereUniqueInput!
+  data: TripUpdateWithoutUsersDataInput!
+}
+
+input TripUpsertWithWhereUniqueWithoutUsersInput {
+  where: TripWhereUniqueInput!
+  update: TripUpdateWithoutUsersDataInput!
+  create: TripCreateWithoutUsersInput!
 }
 
 input TripWhereInput {
@@ -304,6 +342,9 @@ input TripWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
 }
 
 input TripWhereUniqueInput {
@@ -315,6 +356,7 @@ type User implements Node {
   email: String!
   name: String
   password: String!
+  trips(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
 }
 
 """A connection to a list of items."""
@@ -328,6 +370,18 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  email: String!
+  name: String
+  password: String!
+  trips: TripCreateManyWithoutUsersInput
+}
+
+input UserCreateManyWithoutTripsInput {
+  create: [UserCreateWithoutTripsInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateWithoutTripsInput {
   email: String!
   name: String
   password: String!
@@ -407,6 +461,33 @@ input UserUpdateInput {
   email: String
   name: String
   password: String
+  trips: TripUpdateManyWithoutUsersInput
+}
+
+input UserUpdateManyWithoutTripsInput {
+  create: [UserCreateWithoutTripsInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutTripsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutTripsInput!]
+}
+
+input UserUpdateWithoutTripsDataInput {
+  email: String
+  name: String
+  password: String
+}
+
+input UserUpdateWithWhereUniqueWithoutTripsInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutTripsDataInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutTripsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutTripsDataInput!
+  create: UserCreateWithoutTripsInput!
 }
 
 input UserWhereInput {
@@ -578,6 +659,9 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
+  trips_every: TripWhereInput
+  trips_some: TripWhereInput
+  trips_none: TripWhereInput
 }
 
 input UserWhereUniqueInput {

@@ -7,3 +7,10 @@ type Query {
 type Mutation {
   createTrip(name: String!, description: String!): Trip!
 }
+
+type User {
+  id: ID! @unique
+  email: String! @unique
+  name: String
+  trips: [Trip!]!
+}
