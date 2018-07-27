@@ -1,3 +1,41 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+async function signup(parent, args, context, info) {
+  if (!args.password) throw new Error('missing_password');
+  if (!args.email) throw new Error('missing_email');
+
+  const password = await bcrypt.hash(args.password, 10);
+  const user = await context.db.createUser({
+    data: { ...args, password }
+  }, '{ id }');
+
+  const token = jwt.sign({ userId: user.id }, 'AUTH_SECRET');
+
+  return {
+    token,
+    user,
+  };
+}
+
+async function login(parent, args, context, info) {
+  if (!args.password) throw new Error('wrong_credentials');
+  if (!args.email) throw new Error('wrong_credentials');
+
+  const user = await context.db.query.user({ where: { email: args.email } }, '{ id password }');
+  if (!user) throw new Error('wrong_credentials');
+
+  const isValidPass = await bcrypt.compare(user.password, args.password);
+  if (!isValidPass) throw new Error('wrong_credentials');
+
+  const token = jwt.sign({ userId: user.id }, 'AUTH_SECRET');
+
+  return {
+    token,
+    user,
+  };
+}
+
 function createTrip(parent, args, context, info) {
   return context.db.mutation.createTrip({
     data: {
@@ -8,5 +46,7 @@ function createTrip(parent, args, context, info) {
 }
 
 module.exports = {
+  signup,
+  login,
   createTrip
 }

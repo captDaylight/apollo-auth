@@ -6,6 +6,8 @@ type Query {
 
 type Mutation {
   createTrip(name: String!, description: String!): Trip!
+  signup(name: String!, email: String!, password: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
 }
 
 type User {
@@ -13,4 +15,9 @@ type User {
   email: String! @unique
   name: String
   trips: [Trip!]!
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }
