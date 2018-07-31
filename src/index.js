@@ -4,6 +4,10 @@ const Mutation = require('./resolvers/Mutation');
 const Query = require('./resolvers/Query');
 const AuthPayload = require('./resolvers/AuthPayload');
 
+if (!process.env.NODE_ENV) {
+  require('dotenv').config();
+}
+
 const resolvers = {
   Mutation,
   Query,
@@ -18,7 +22,7 @@ const server = new GraphQLServer({
     db: new Prisma({
       typeDefs: './src/generated/prisma.graphql',
       endpoint: 'https://eu1.prisma.sh/paulchristophe6-1adc8b/travel-dev/dev',
-      secret: 'mysecret123',
+      secret: process.env.APP_SECRET,
       debug: true,
     })
   }),

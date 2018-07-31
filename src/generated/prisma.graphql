@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/paulchristophe6-1adc8b/travel-dev/dev
-# timestamp: Mon Jul 30 2018 11:23:38 GMT-0400 (EDT)
+# timestamp: Tue Jul 31 2018 10:22:30 GMT-0400 (EDT)
 
 type AggregateTrip {
   count: Int!
@@ -86,7 +86,7 @@ type Trip implements Node {
   id: ID!
   name: String!
   description: String
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  travelers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 """A connection to a list of items."""
@@ -102,15 +102,15 @@ type TripConnection {
 input TripCreateInput {
   name: String!
   description: String
-  users: UserCreateManyWithoutTripsInput
+  travelers: UserCreateManyWithoutTripsInput
 }
 
-input TripCreateManyWithoutUsersInput {
-  create: [TripCreateWithoutUsersInput!]
+input TripCreateManyWithoutTravelersInput {
+  create: [TripCreateWithoutTravelersInput!]
   connect: [TripWhereUniqueInput!]
 }
 
-input TripCreateWithoutUsersInput {
+input TripCreateWithoutTravelersInput {
   name: String!
   description: String
 }
@@ -185,32 +185,32 @@ input TripSubscriptionWhereInput {
 input TripUpdateInput {
   name: String
   description: String
-  users: UserUpdateManyWithoutTripsInput
+  travelers: UserUpdateManyWithoutTripsInput
 }
 
-input TripUpdateManyWithoutUsersInput {
-  create: [TripCreateWithoutUsersInput!]
+input TripUpdateManyWithoutTravelersInput {
+  create: [TripCreateWithoutTravelersInput!]
   connect: [TripWhereUniqueInput!]
   disconnect: [TripWhereUniqueInput!]
   delete: [TripWhereUniqueInput!]
-  update: [TripUpdateWithWhereUniqueWithoutUsersInput!]
-  upsert: [TripUpsertWithWhereUniqueWithoutUsersInput!]
+  update: [TripUpdateWithWhereUniqueWithoutTravelersInput!]
+  upsert: [TripUpsertWithWhereUniqueWithoutTravelersInput!]
 }
 
-input TripUpdateWithoutUsersDataInput {
+input TripUpdateWithoutTravelersDataInput {
   name: String
   description: String
 }
 
-input TripUpdateWithWhereUniqueWithoutUsersInput {
+input TripUpdateWithWhereUniqueWithoutTravelersInput {
   where: TripWhereUniqueInput!
-  data: TripUpdateWithoutUsersDataInput!
+  data: TripUpdateWithoutTravelersDataInput!
 }
 
-input TripUpsertWithWhereUniqueWithoutUsersInput {
+input TripUpsertWithWhereUniqueWithoutTravelersInput {
   where: TripWhereUniqueInput!
-  update: TripUpdateWithoutUsersDataInput!
-  create: TripCreateWithoutUsersInput!
+  update: TripUpdateWithoutTravelersDataInput!
+  create: TripCreateWithoutTravelersInput!
 }
 
 input TripWhereInput {
@@ -342,9 +342,9 @@ input TripWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  users_every: UserWhereInput
-  users_some: UserWhereInput
-  users_none: UserWhereInput
+  travelers_every: UserWhereInput
+  travelers_some: UserWhereInput
+  travelers_none: UserWhereInput
 }
 
 input TripWhereUniqueInput {
@@ -375,7 +375,7 @@ input UserCreateInput {
   name: String
   password: String!
   verified: Boolean
-  trips: TripCreateManyWithoutUsersInput
+  trips: TripCreateManyWithoutTravelersInput
 }
 
 input UserCreateManyWithoutTripsInput {
@@ -468,7 +468,7 @@ input UserUpdateInput {
   name: String
   password: String
   verified: Boolean
-  trips: TripUpdateManyWithoutUsersInput
+  trips: TripUpdateManyWithoutTravelersInput
 }
 
 input UserUpdateManyWithoutTripsInput {

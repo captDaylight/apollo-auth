@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { APP_SECRET, getUserId } = require('../utils');
+const { getUserId } = require('../utils');
 
 async function signup(parent, args, context, info) {
   if (!args.password) throw new Error('missing_password');
@@ -11,7 +11,7 @@ async function signup(parent, args, context, info) {
     data: { ...args, password }
   }, '{ id }');
 
-  const token = jwt.sign({ userId: user.id }, 'AUTH_SECRET');
+  const token = jwt.sign({ userId: user.id }, process.env.AUTH_SECRET);
 
   return {
     token,
@@ -29,7 +29,7 @@ async function login(parent, args, context, info) {
   const isValidPass = await bcrypt.compare(user.password, args.password);
   if (!isValidPass) throw new Error('wrong_credentials');
 
-  const token = jwt.sign({ userId: user.id }, 'AUTH_SECRET');
+  const token = jwt.sign({ userId: user.id }, process.env.AUTH_SECRET);
 
   return {
     token,
