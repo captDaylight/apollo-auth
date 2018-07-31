@@ -11,8 +11,8 @@ type Mutation {
 }
 
 type User {
-  id: ID! @unique
-  email: String! @unique
+  id: ID!
+  email: String!
   name: String
   trips: [Trip!]!
 }

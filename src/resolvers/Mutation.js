@@ -1,12 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { APP_SECRET, getUserId } = require('../utils');
 
 async function signup(parent, args, context, info) {
   if (!args.password) throw new Error('missing_password');
   if (!args.email) throw new Error('missing_email');
 
   const password = await bcrypt.hash(args.password, 10);
-  const user = await context.db.createUser({
+  const user = await context.db.mutation.createUser({
     data: { ...args, password }
   }, '{ id }');
 
@@ -37,10 +38,14 @@ async function login(parent, args, context, info) {
 }
 
 function createTrip(parent, args, context, info) {
+  const usedId = getUserId(context);
+
   return context.db.mutation.createTrip({
     data: {
       name: args.name,
       description: args.description,
+      owner: { connect: { id: userId } },
+      travelers: { connect: [{ id: userId }] },
     }
   }, info);
 }

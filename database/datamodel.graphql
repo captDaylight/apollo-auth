@@ -11,5 +11,5 @@ type Trip {
   id: ID! @unique
   name: String!
   description: String
-  users: [User!]!
+  travelers: [User!]!
 }

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/paulchristophe6-1adc8b/travel-dev/dev
-# timestamp: Fri Jul 27 2018 10:19:21 GMT-0400 (EDT)
+# timestamp: Mon Jul 30 2018 11:23:38 GMT-0400 (EDT)
 
 type AggregateTrip {
   count: Int!
@@ -356,6 +356,7 @@ type User implements Node {
   email: String!
   name: String
   password: String!
+  verified: Boolean!
   trips(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
 }
 
@@ -373,6 +374,7 @@ input UserCreateInput {
   email: String!
   name: String
   password: String!
+  verified: Boolean
   trips: TripCreateManyWithoutUsersInput
 }
 
@@ -385,6 +387,7 @@ input UserCreateWithoutTripsInput {
   email: String!
   name: String
   password: String!
+  verified: Boolean
 }
 
 """An edge in a connection."""
@@ -405,6 +408,8 @@ enum UserOrderByInput {
   name_DESC
   password_ASC
   password_DESC
+  verified_ASC
+  verified_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -416,6 +421,7 @@ type UserPreviousValues {
   email: String!
   name: String
   password: String!
+  verified: Boolean!
 }
 
 type UserSubscriptionPayload {
@@ -461,6 +467,7 @@ input UserUpdateInput {
   email: String
   name: String
   password: String
+  verified: Boolean
   trips: TripUpdateManyWithoutUsersInput
 }
 
@@ -477,6 +484,7 @@ input UserUpdateWithoutTripsDataInput {
   email: String
   name: String
   password: String
+  verified: Boolean
 }
 
 input UserUpdateWithWhereUniqueWithoutTripsInput {
@@ -659,6 +667,10 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
+  verified: Boolean
+
+  """All values that are not equal to given value."""
+  verified_not: Boolean
   trips_every: TripWhereInput
   trips_some: TripWhereInput
   trips_none: TripWhereInput
