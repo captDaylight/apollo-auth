@@ -4,12 +4,14 @@ type User {
   name: String
   password: String!
   verified: Boolean! @default(value: "false")
-  trips: [Trip!]!
+  trips: [Trip!]! @relation(name: "TripsTraveling")
+  ownedTrips: [Trip!]! @relation(name: "OwnedTrips")
 }
 
 type Trip {
   id: ID! @unique
   name: String!
   description: String
-  travelers: [User!]!
+  travelers: [User!]! @relation(name: "TripsTraveling")
+  owner: User! @relation(name: "OwnedTrips")
 }
