@@ -5,7 +5,7 @@ type User {
   password: String!
   verified: Boolean! @default(value: "false")
   trips: [Trip!]! @relation(name: "TripsTraveling")
-  ownedTrips: [Trip!]! @relation(name: "OwnedTrips")
+  ownedTrips: [Trip!]! @relation(name: "OwnerTrips")
 }
 
 type Trip {
@@ -13,5 +13,5 @@ type Trip {
   name: String!
   description: String
   travelers: [User!]! @relation(name: "TripsTraveling")
-  owner: User! @relation(name: "OwnedTrips")
+  owner: User! @relation(name: "OwnerTrips")
 }
