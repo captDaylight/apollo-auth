@@ -38,13 +38,13 @@ async function login(parent, args, context, info) {
 }
 
 function createTrip(parent, args, context, info) {
-  const usedId = getUserId(context);
+  const userId = getUserId(context);
 
   return context.db.mutation.createTrip({
     data: {
       name: args.name,
       description: args.description,
-      owner: { connect: { id: userId } },
+      organizers: { connect: [{ id: userId }] },
       travelers: { connect: [{ id: userId }] },
     }
   }, info);

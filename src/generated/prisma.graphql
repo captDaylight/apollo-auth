@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/paulchristophe6-1adc8b/travel/dev
-# timestamp: Tue Jul 31 2018 17:42:09 GMT-0400 (EDT)
+# source: https://us1.prisma.sh/paulchristophe6-1adc8b/traveler/dev
+# timestamp: Wed Aug 01 2018 17:15:27 GMT-0400 (EDT)
 
 type AggregateTrip {
   count: Int!
@@ -87,7 +87,7 @@ type Trip implements Node {
   name: String!
   description: String
   travelers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  owner(where: UserWhereInput): User!
+  organizers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
 
 """A connection to a list of items."""
@@ -104,11 +104,11 @@ input TripCreateInput {
   name: String!
   description: String
   travelers: UserCreateManyWithoutTripsInput
-  owner: UserCreateOneWithoutOwnedTripsInput!
+  organizers: UserCreateManyWithoutTripsOrganizingInput
 }
 
-input TripCreateManyWithoutOwnerInput {
-  create: [TripCreateWithoutOwnerInput!]
+input TripCreateManyWithoutOrganizersInput {
+  create: [TripCreateWithoutOrganizersInput!]
   connect: [TripWhereUniqueInput!]
 }
 
@@ -117,7 +117,7 @@ input TripCreateManyWithoutTravelersInput {
   connect: [TripWhereUniqueInput!]
 }
 
-input TripCreateWithoutOwnerInput {
+input TripCreateWithoutOrganizersInput {
   name: String!
   description: String
   travelers: UserCreateManyWithoutTripsInput
@@ -126,7 +126,7 @@ input TripCreateWithoutOwnerInput {
 input TripCreateWithoutTravelersInput {
   name: String!
   description: String
-  owner: UserCreateOneWithoutOwnedTripsInput!
+  organizers: UserCreateManyWithoutTripsOrganizingInput
 }
 
 """An edge in a connection."""
@@ -200,16 +200,16 @@ input TripUpdateInput {
   name: String
   description: String
   travelers: UserUpdateManyWithoutTripsInput
-  owner: UserUpdateOneWithoutOwnedTripsInput
+  organizers: UserUpdateManyWithoutTripsOrganizingInput
 }
 
-input TripUpdateManyWithoutOwnerInput {
-  create: [TripCreateWithoutOwnerInput!]
+input TripUpdateManyWithoutOrganizersInput {
+  create: [TripCreateWithoutOrganizersInput!]
   connect: [TripWhereUniqueInput!]
   disconnect: [TripWhereUniqueInput!]
   delete: [TripWhereUniqueInput!]
-  update: [TripUpdateWithWhereUniqueWithoutOwnerInput!]
-  upsert: [TripUpsertWithWhereUniqueWithoutOwnerInput!]
+  update: [TripUpdateWithWhereUniqueWithoutOrganizersInput!]
+  upsert: [TripUpsertWithWhereUniqueWithoutOrganizersInput!]
 }
 
 input TripUpdateManyWithoutTravelersInput {
@@ -221,7 +221,7 @@ input TripUpdateManyWithoutTravelersInput {
   upsert: [TripUpsertWithWhereUniqueWithoutTravelersInput!]
 }
 
-input TripUpdateWithoutOwnerDataInput {
+input TripUpdateWithoutOrganizersDataInput {
   name: String
   description: String
   travelers: UserUpdateManyWithoutTripsInput
@@ -230,12 +230,12 @@ input TripUpdateWithoutOwnerDataInput {
 input TripUpdateWithoutTravelersDataInput {
   name: String
   description: String
-  owner: UserUpdateOneWithoutOwnedTripsInput
+  organizers: UserUpdateManyWithoutTripsOrganizingInput
 }
 
-input TripUpdateWithWhereUniqueWithoutOwnerInput {
+input TripUpdateWithWhereUniqueWithoutOrganizersInput {
   where: TripWhereUniqueInput!
-  data: TripUpdateWithoutOwnerDataInput!
+  data: TripUpdateWithoutOrganizersDataInput!
 }
 
 input TripUpdateWithWhereUniqueWithoutTravelersInput {
@@ -243,10 +243,10 @@ input TripUpdateWithWhereUniqueWithoutTravelersInput {
   data: TripUpdateWithoutTravelersDataInput!
 }
 
-input TripUpsertWithWhereUniqueWithoutOwnerInput {
+input TripUpsertWithWhereUniqueWithoutOrganizersInput {
   where: TripWhereUniqueInput!
-  update: TripUpdateWithoutOwnerDataInput!
-  create: TripCreateWithoutOwnerInput!
+  update: TripUpdateWithoutOrganizersDataInput!
+  create: TripCreateWithoutOrganizersInput!
 }
 
 input TripUpsertWithWhereUniqueWithoutTravelersInput {
@@ -387,7 +387,9 @@ input TripWhereInput {
   travelers_every: UserWhereInput
   travelers_some: UserWhereInput
   travelers_none: UserWhereInput
-  owner: UserWhereInput
+  organizers_every: UserWhereInput
+  organizers_some: UserWhereInput
+  organizers_none: UserWhereInput
 }
 
 input TripWhereUniqueInput {
@@ -401,7 +403,7 @@ type User implements Node {
   password: String!
   verified: Boolean!
   trips(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
-  ownedTrips(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
+  tripsOrganizing(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
 }
 
 """A connection to a list of items."""
@@ -420,7 +422,7 @@ input UserCreateInput {
   password: String!
   verified: Boolean
   trips: TripCreateManyWithoutTravelersInput
-  ownedTrips: TripCreateManyWithoutOwnerInput
+  tripsOrganizing: TripCreateManyWithoutOrganizersInput
 }
 
 input UserCreateManyWithoutTripsInput {
@@ -428,17 +430,9 @@ input UserCreateManyWithoutTripsInput {
   connect: [UserWhereUniqueInput!]
 }
 
-input UserCreateOneWithoutOwnedTripsInput {
-  create: UserCreateWithoutOwnedTripsInput
-  connect: UserWhereUniqueInput
-}
-
-input UserCreateWithoutOwnedTripsInput {
-  email: String!
-  name: String
-  password: String!
-  verified: Boolean
-  trips: TripCreateManyWithoutTravelersInput
+input UserCreateManyWithoutTripsOrganizingInput {
+  create: [UserCreateWithoutTripsOrganizingInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input UserCreateWithoutTripsInput {
@@ -446,7 +440,15 @@ input UserCreateWithoutTripsInput {
   name: String
   password: String!
   verified: Boolean
-  ownedTrips: TripCreateManyWithoutOwnerInput
+  tripsOrganizing: TripCreateManyWithoutOrganizersInput
+}
+
+input UserCreateWithoutTripsOrganizingInput {
+  email: String!
+  name: String
+  password: String!
+  verified: Boolean
+  trips: TripCreateManyWithoutTravelersInput
 }
 
 """An edge in a connection."""
@@ -528,7 +530,7 @@ input UserUpdateInput {
   password: String
   verified: Boolean
   trips: TripUpdateManyWithoutTravelersInput
-  ownedTrips: TripUpdateManyWithoutOwnerInput
+  tripsOrganizing: TripUpdateManyWithoutOrganizersInput
 }
 
 input UserUpdateManyWithoutTripsInput {
@@ -540,20 +542,13 @@ input UserUpdateManyWithoutTripsInput {
   upsert: [UserUpsertWithWhereUniqueWithoutTripsInput!]
 }
 
-input UserUpdateOneWithoutOwnedTripsInput {
-  create: UserCreateWithoutOwnedTripsInput
-  connect: UserWhereUniqueInput
-  delete: Boolean
-  update: UserUpdateWithoutOwnedTripsDataInput
-  upsert: UserUpsertWithoutOwnedTripsInput
-}
-
-input UserUpdateWithoutOwnedTripsDataInput {
-  email: String
-  name: String
-  password: String
-  verified: Boolean
-  trips: TripUpdateManyWithoutTravelersInput
+input UserUpdateManyWithoutTripsOrganizingInput {
+  create: [UserCreateWithoutTripsOrganizingInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutTripsOrganizingInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutTripsOrganizingInput!]
 }
 
 input UserUpdateWithoutTripsDataInput {
@@ -561,7 +556,15 @@ input UserUpdateWithoutTripsDataInput {
   name: String
   password: String
   verified: Boolean
-  ownedTrips: TripUpdateManyWithoutOwnerInput
+  tripsOrganizing: TripUpdateManyWithoutOrganizersInput
+}
+
+input UserUpdateWithoutTripsOrganizingDataInput {
+  email: String
+  name: String
+  password: String
+  verified: Boolean
+  trips: TripUpdateManyWithoutTravelersInput
 }
 
 input UserUpdateWithWhereUniqueWithoutTripsInput {
@@ -569,15 +572,21 @@ input UserUpdateWithWhereUniqueWithoutTripsInput {
   data: UserUpdateWithoutTripsDataInput!
 }
 
-input UserUpsertWithoutOwnedTripsInput {
-  update: UserUpdateWithoutOwnedTripsDataInput!
-  create: UserCreateWithoutOwnedTripsInput!
+input UserUpdateWithWhereUniqueWithoutTripsOrganizingInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutTripsOrganizingDataInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutTripsInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutTripsDataInput!
   create: UserCreateWithoutTripsInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutTripsOrganizingInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutTripsOrganizingDataInput!
+  create: UserCreateWithoutTripsOrganizingInput!
 }
 
 input UserWhereInput {
@@ -756,9 +765,9 @@ input UserWhereInput {
   trips_every: TripWhereInput
   trips_some: TripWhereInput
   trips_none: TripWhereInput
-  ownedTrips_every: TripWhereInput
-  ownedTrips_some: TripWhereInput
-  ownedTrips_none: TripWhereInput
+  tripsOrganizing_every: TripWhereInput
+  tripsOrganizing_some: TripWhereInput
+  tripsOrganizing_none: TripWhereInput
 }
 
 input UserWhereUniqueInput {

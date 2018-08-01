@@ -15,6 +15,7 @@ type User {
   email: String!
   name: String
   trips: [Trip!]!
+  tripsOrganizing: [Trip!]!
 }
 
 type AuthPayload {

@@ -1,4 +1,4 @@
-endpoint: https://eu1.prisma.sh/paulchristophe6-1adc8b/travel/dev
+endpoint: ${env:DB_ENDPOINT}
 datamodel: datamodel.graphql
 secret: ${env:APP_SECRET}
 
