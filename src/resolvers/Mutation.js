@@ -46,12 +46,31 @@ function createTrip(parent, args, context, info) {
       description: args.description,
       organizers: { connect: [{ id: userId }] },
       travelers: { connect: [{ id: userId }] },
-    }
+    },
+  }, info);
+}
+
+function addUsersToTrip(parent, args, context, info) {
+  // in the future, it could be user emails. if email doesn't exist then create
+  // user and then add to the trip.
+
+  // at some point nested mutations, create users when adding missing ones:
+  // https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo/#transactional-mutations
+  const ids = args.userIds.map(id => ({ id }));
+  console.log(ids, args.tripId);
+  return context.db.mutation.updateTrip({
+    where: {
+      id: args.tripId,
+    },
+    data: {
+      travelers: { connect: ids },
+    },
   }, info);
 }
 
 module.exports = {
   signup,
   login,
-  createTrip
+  createTrip,
+  addUsersToTrip,
 }
