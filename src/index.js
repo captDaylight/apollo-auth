@@ -1,11 +1,12 @@
 const { Prisma } = require('prisma-binding');
 const { GraphQLServer } = require('graphql-yoga');
+const donenv = require('dotenv');
 const Mutation = require('./resolvers/Mutation');
 const Query = require('./resolvers/Query');
 const AuthPayload = require('./resolvers/AuthPayload');
 
 if (!process.env.NODE_ENV) {
-  require('dotenv').config();
+  donenv.config();
 }
 
 const resolvers = {
@@ -24,8 +25,8 @@ const server = new GraphQLServer({
       endpoint: process.env.DB_ENDPOINT,
       secret: process.env.APP_SECRET,
       debug: true,
-    })
+    }),
   }),
 });
 
-server.start(() => console.log(`Server is running on http://localhost:4000`));
+server.start(() => console.log('Server is running on http://localhost:4000'));
