@@ -50,6 +50,10 @@ function createTrip(parent, args, context, info) {
   }, info);
 }
 
+function onlyNewTravelers(travelers) {
+  return userId => travelers.findIndex(traveler => traveler.id === userId) === -1;
+}
+
 async function addUsersToTrip(parent, args, context, info) {
   // in the future, it could be user emails. if email doesn't exist then create
   // user and then add to the trip.
@@ -58,13 +62,22 @@ async function addUsersToTrip(parent, args, context, info) {
   // https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo/#transactional-mutations
   const userId = getUserId(context);
 
-  const user = await context.db.query.user(
-    { where: { id: userId } },
-    '{ tripsOrganizing { id } }',
+  const trip = await context.db.query.trip(
+    { where: { id: args.tripId } },
+    `
+      {
+        organizers { id }
+        travelers { id }
+      }
+    `,
   );
 
-  if (user.tripsOrganizing.findIndex(trip => trip.id === args.tripId) > -1) {
-    const ids = args.userIds.map(id => ({ id }));
+  if (!trip) throw new Error('no_trip');
+
+  if (trip.organizers.findIndex(organizer => organizer.id === userId) > -1) {
+    const ids = args.userIds
+      .filter(onlyNewTravelers(trip.travelers))
+      .map(id => ({ id }));
 
     return context.db.mutation.updateTrip({
       where: {
