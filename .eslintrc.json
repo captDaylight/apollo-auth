@@ -2,5 +2,9 @@
     "extends": "airbnb",
     "rules": {
       "react/destructuring-assignment": [0]
+    },
+    "env": {
+        "browser": true,
+        "node": true
     }
 }
