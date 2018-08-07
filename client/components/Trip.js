@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Trip = name => (
+const Trip = ({ name }) => (
   <div>
     TripName:
     {name}
