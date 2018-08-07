@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Trip = ({ name }) => (
   <div>
@@ -6,5 +7,9 @@ const Trip = ({ name }) => (
     {name}
   </div>
 );
+
+Trip.propTypes = {
+  name: PropTypes.string.isRequired,
+};
 
 export default Trip;
