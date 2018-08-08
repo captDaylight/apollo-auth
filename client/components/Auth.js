@@ -1,4 +1,26 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+
+const SIGNUP_MUTATION = gql`
+  {
+    SignupMutation(
+      $name: String!
+      $email: String!
+      $password: String!
+    ) {
+      signup(name: $name, email: $email, password: $password) {
+        token
+        user {
+          id
+          name
+          email
+        }
+      }
+    }
+  }
+`;
 
 class Auth extends PureComponent {
   constructor(props) {
@@ -54,6 +76,15 @@ class Auth extends PureComponent {
           placeholder="password"
           id="auth-password"
         />
+
+        <Mutation
+          mutation={SIGNUP_MUTATION}
+          variables={isSignup ? { name, email, password } : { email, password }}
+        >
+          {
+            mutation => <button onClick={mutation}>Submit</button>
+          }
+        </Mutation>
       </div>
     );
   }
@@ -61,6 +92,6 @@ class Auth extends PureComponent {
 
 Auth.propTypes = {
   type: PropTypes.string.isRequired,
-}
+};
 
 export default Auth;
