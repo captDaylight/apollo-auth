@@ -4,19 +4,13 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const SIGNUP_MUTATION = gql`
-  {
-    SignupMutation(
-      $name: String!
-      $email: String!
-      $password: String!
-    ) {
-      signup(name: $name, email: $email, password: $password) {
-        token
-        user {
-          id
-          name
-          email
-        }
+  mutation SignupMutation($name: String!, $email: String!, $password: String!) {
+    signup(name: $name, email: $email, password: $password) {
+      token
+      user {
+        id
+        name
+        email
       }
     }
   }
@@ -72,7 +66,7 @@ class Auth extends PureComponent {
         <input
           value={password}
           onChange={e => this.setState({ password: e.target.value })}
-          type="text"
+          type="password"
           placeholder="password"
           id="auth-password"
         />
@@ -80,6 +74,7 @@ class Auth extends PureComponent {
         <Mutation
           mutation={SIGNUP_MUTATION}
           variables={isSignup ? { name, email, password } : { email, password }}
+          onCompleted={res => {console.log('complete', res)}}
         >
           {
             mutation => <button onClick={mutation}>Submit</button>
