@@ -4,7 +4,6 @@ const donenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const Mutation = require('./resolvers/Mutation');
 const Query = require('./resolvers/Query');
-const AuthPayload = require('./resolvers/AuthPayload');
 
 if (!process.env.NODE_ENV) {
   donenv.config();
@@ -13,7 +12,6 @@ if (!process.env.NODE_ENV) {
 const resolvers = {
   Mutation,
   Query,
-  AuthPayload,
 };
 
 const server = new GraphQLServer({
