@@ -1,25 +1,25 @@
 const bcrypt = require('bcrypt');
 const { getUserId, setToken } = require('../utils');
 
-async function signup(parent, args, context) {
+async function signup(parent, args, context, info) {
   if (!args.password) throw new Error('missing_password');
   if (!args.email) throw new Error('missing_email');
 
   const password = await bcrypt.hash(args.password, 10);
   const user = await context.db.mutation.createUser({
     data: { ...args, password },
-  }, '{ id }');
+  }, info);
 
   setToken(user.id, context);
 
   return user;
 }
 
-async function login(parent, args, context) {
+async function login(parent, args, context, info) {
   if (!args.password) throw new Error('wrong_credentials');
   if (!args.email) throw new Error('wrong_credentials');
 
-  const user = await context.db.query.user({ where: { email: args.email } }, '{ id password }');
+  const user = await context.db.query.user({ where: { email: args.email } }, info);
   if (!user) throw new Error('wrong_credentials');
 
   const isValidPass = await bcrypt.compare(user.password, args.password);
