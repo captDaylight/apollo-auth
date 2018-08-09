@@ -7,8 +7,8 @@ type Query {
 type Mutation {
   createTrip(name: String!, description: String!): Trip!
   addUsersToTrip(userIds: [ID!]!, tripId: ID!): Trip
-  signup(name: String!, email: String!, password: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
+  signup(name: String!, email: String!, password: String!): User
+  login(email: String!, password: String!): User
 }
 
 type User {
@@ -17,9 +17,4 @@ type User {
   name: String
   trips: [Trip!]!
   tripsOrganizing: [Trip!]!
-}
-
-type AuthPayload {
-  token: String
-  user: User
 }

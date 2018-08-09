@@ -74,10 +74,10 @@ class Auth extends PureComponent {
         <Mutation
           mutation={SIGNUP_MUTATION}
           variables={isSignup ? { name, email, password } : { email, password }}
-          onCompleted={res => {console.log('complete', res)}}
+          onCompleted={(res) => { console.log('complete', res); }}
         >
           {
-            mutation => <button onClick={mutation}>Submit</button>
+            mutation => <button onClick={mutation} type="submit">Submit</button>
           }
         </Mutation>
       </div>

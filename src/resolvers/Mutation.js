@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { getUserId } = require('../utils');
+const { getUserId, setToken } = require('../utils');
 
 async function signup(parent, args, context) {
   if (!args.password) throw new Error('missing_password');
@@ -11,12 +10,9 @@ async function signup(parent, args, context) {
     data: { ...args, password },
   }, '{ id }');
 
-  const token = jwt.sign({ userId: user.id }, process.env.AUTH_SECRET);
+  setToken(user.id, context);
 
-  return {
-    token,
-    user,
-  };
+  return user;
 }
 
 async function login(parent, args, context) {
@@ -29,12 +25,9 @@ async function login(parent, args, context) {
   const isValidPass = await bcrypt.compare(user.password, args.password);
   if (!isValidPass) throw new Error('wrong_credentials');
 
-  const token = jwt.sign({ userId: user.id }, process.env.AUTH_SECRET);
+  setToken(user.id, context);
 
-  return {
-    token,
-    user,
-  };
+  return user;
 }
 
 function createTrip(parent, args, context, info) {
