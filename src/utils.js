@@ -15,7 +15,11 @@ async function getUserId(context) {
 
 function setToken(userId, context) {
   const token = jwt.sign({ userId }, process.env.AUTH_SECRET);
-
+  console.log('token', token, {
+    /* 1000 years (basically never expires), TODO: work out expiry */
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+    // httpOnly: true,
+  });
   context.response.cookie('token', token, {
     /* 1000 years (basically never expires), TODO: work out expiry */
     maxAge: 1000 * 60 * 60 * 24 * 365,
