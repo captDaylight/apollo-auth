@@ -23,7 +23,8 @@ const TRIP_QUERY = gql`
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
-  credentials: 'same-origin', // send cookies
+  // credentials: 'same-origin', // send cookies
+  credentials: 'include', // localhost server diff from parcel
 });
 
 const client = new ApolloClient({

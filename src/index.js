@@ -16,6 +16,9 @@ const resolvers = {
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
+  resolverValidationOptions: {
+    requireResolversForResolveType: false,
+  },
   resolvers,
   context: req => ({
     ...req,
@@ -34,7 +37,7 @@ const serverOptions = {
   port: process.env.PORT || 4000,
   cors: {
     credentials: true,
-    // origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL,
   },
 };
 
