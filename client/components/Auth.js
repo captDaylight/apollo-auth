@@ -45,41 +45,7 @@ class Auth extends PureComponent {
 
     return (
       <div>
-        {isSignup ? 'Sign Up' : 'Log In'}
-
-        {
-          isSignup
-          && (
-            <React.Fragment>
-              <label htmlFor="auth-name">name</label>
-              <input
-                value={name}
-                onChange={e => this.setState({ name: e.target.value })}
-                type="text"
-                placeholder="name"
-                id="auth-name"
-              />
-            </React.Fragment>
-
-          )
-        }
-        <label htmlFor="email">email</label>
-        <input
-          value={email}
-          onChange={e => this.setState({ email: e.target.value })}
-          type="text"
-          placeholder="email"
-          id="auth-email"
-        />
-
-        <label htmlFor="password">password</label>
-        <input
-          value={password}
-          onChange={e => this.setState({ password: e.target.value })}
-          type="password"
-          placeholder="password"
-          id="auth-password"
-        />
+        <h1>{isSignup ? 'Sign Up' : 'Log In'}</h1>
 
         <Mutation
           mutation={isSignup ? SIGNUP_MUTATION : LOGIN_MUTATION}
@@ -87,7 +53,50 @@ class Auth extends PureComponent {
           onCompleted={(res) => { console.log('complete', res); }}
         >
           {
-            mutation => <button onClick={mutation} type="submit">Submit</button>
+            mutation => (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  mutation();
+                }}
+              >
+                {
+                  isSignup
+                  && (
+                    <React.Fragment>
+                      <label htmlFor="auth-name">name</label>
+                      <input
+                        value={name}
+                        onChange={e => this.setState({ name: e.target.value })}
+                        type="text"
+                        placeholder="name"
+                        id="auth-name"
+                      />
+                    </React.Fragment>
+
+                  )
+                }
+                <label htmlFor="email">email</label>
+                <input
+                  value={email}
+                  onChange={e => this.setState({ email: e.target.value })}
+                  type="text"
+                  placeholder="email"
+                  id="auth-email"
+                />
+
+                <label htmlFor="password">password</label>
+                <input
+                  value={password}
+                  onChange={e => this.setState({ password: e.target.value })}
+                  type="password"
+                  placeholder="password"
+                  id="auth-password"
+                />
+
+                <button type="submit">Submit</button>
+              </form>
+            )
           }
         </Mutation>
       </div>
