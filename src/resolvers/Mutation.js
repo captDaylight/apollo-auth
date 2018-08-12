@@ -15,14 +15,14 @@ async function signup(parent, args, context, info) {
   return user;
 }
 
-async function login(parent, args, context, info) {
+async function login(parent, args, context) {
   if (!args.password) throw new Error('wrong_credentials');
   if (!args.email) throw new Error('wrong_credentials');
 
-  const user = await context.db.query.user({ where: { email: args.email } }, info);
+  const user = await context.db.query.user({ where: { email: args.email } });
   if (!user) throw new Error('wrong_credentials');
 
-  const isValidPass = await bcrypt.compare(user.password, args.password);
+  const isValidPass = await bcrypt.compare(args.password, user.password);
   if (!isValidPass) throw new Error('wrong_credentials');
 
   setToken(user.id, context);

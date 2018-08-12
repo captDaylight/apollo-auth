@@ -13,6 +13,16 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      id
+      name
+      email
+    }
+  }
+`;
+
 class Auth extends PureComponent {
   constructor(props) {
     super(props);
@@ -21,14 +31,17 @@ class Auth extends PureComponent {
       email: '',
       password: '',
       name: '',
+      isSignup: props.type === 'SIGNUP',
     };
   }
 
   render() {
-    const { type } = this.props;
-    const { email, password, name } = this.state;
-
-    const isSignup = type === 'SIGNUP';
+    const {
+      email,
+      password,
+      name,
+      isSignup,
+    } = this.state;
 
     return (
       <div>
@@ -69,7 +82,7 @@ class Auth extends PureComponent {
         />
 
         <Mutation
-          mutation={SIGNUP_MUTATION}
+          mutation={isSignup ? SIGNUP_MUTATION : LOGIN_MUTATION}
           variables={isSignup ? { name, email, password } : { email, password }}
           onCompleted={(res) => { console.log('complete', res); }}
         >
