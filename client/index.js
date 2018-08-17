@@ -2,8 +2,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { ApolloProvider, Query } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { withClientState } from 'apollo-link-state';
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import gql from 'graphql-tag';
 import {
   BrowserRouter as Router,
@@ -28,7 +30,7 @@ const httpLink = createHttpLink({
 });
 
 const client = new ApolloClient({
-  link: httpLink,
+  link: ApolloLink.from([withClientState({}), httpLink]),
   cache: new InMemoryCache(),
 });
 
