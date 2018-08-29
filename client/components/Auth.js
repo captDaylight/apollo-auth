@@ -73,7 +73,6 @@ class Auth extends PureComponent {
                         id="auth-name"
                       />
                     </React.Fragment>
-
                   )
                 }
                 <label htmlFor="email">email</label>

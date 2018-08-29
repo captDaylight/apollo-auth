@@ -1,3 +1,4 @@
+import './style/index.scss';
 import React from 'react';
 import { render } from 'react-dom';
 import { ApolloProvider, Query } from 'react-apollo';
@@ -5,7 +6,7 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
 import { withClientState } from 'apollo-link-state';
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import gql from 'graphql-tag';
 import {
   BrowserRouter as Router,
@@ -13,6 +14,7 @@ import {
 } from 'react-router-dom';
 import Auth from './components/Auth';
 import Trip from './components/Trip';
+import Header from './components/Header';
 
 const TRIP_QUERY = gql`
   {
@@ -37,6 +39,7 @@ const client = new ApolloClient({
 const App = () => (
   <Router>
     <ApolloProvider client={client}>
+      <Header />
       <Route path="/signup" render={() => <Auth type="SIGNUP" />} />
       <Route path="/login" render={() => <Auth type="LOGIN" />} />
 

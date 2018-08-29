@@ -1,0 +1,13 @@
+$gray: #ccc;
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: $gray;
+  padding: 10px;
+  width: 100%;
+}
