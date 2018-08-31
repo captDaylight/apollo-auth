@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { getUserId, setToken } = require('../utils');
+const { getUserId, setToken, clearToken } = require('../utils');
 
 async function signup(parent, args, context, info) {
   if (!args.password) throw new Error('missing_password');
@@ -28,6 +28,11 @@ async function login(parent, args, context) {
   setToken(user.id, context);
 
   return user;
+}
+
+function logout(parent, args, context) {
+  clearToken(context);
+  return { message: 'success' };
 }
 
 function createTrip(parent, args, context, info) {
@@ -88,6 +93,7 @@ async function addUsersToTrip(parent, args, context, info) {
 module.exports = {
   signup,
   login,
+  logout,
   createTrip,
   addUsersToTrip,
 };

@@ -23,7 +23,12 @@ function setToken(userId, context) {
   });
 }
 
+function clearToken(context) {
+  context.response.clearCookie('token');
+}
+
 module.exports = {
   getUserId,
   setToken,
+  clearToken,
 };
