@@ -1,25 +1,30 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 // import PropTypes from 'prop-types';
-// import { Query } from 'react-apollo';
-// import gql from 'graphql-tag';
-//
-// const AUTH_QUERY = gql`
-//
-// `;
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
-class Header extends PureComponent {
-  constructor(props) {
-    super(props);
+const LOGOUT_MUTATION = gql`
+  mutation LogoutMutation {
+    logout {
+      message
+    }
   }
+`;
 
-  render() {
-    return (
-      <div className="header">
-        header
-      </div>
-    );
-  }
-}
+const Header = () => (
+  <div className="header">
+    header
+    <Mutation
+      mutation={LOGOUT_MUTATION}
+    >
+      {
+        mutation => <button type="submit" onClick={mutation}>Logout</button>
+      }
+    </Mutation>
+
+  </div>
+);
+
 
 // Header.propTypes = {
 //   type: PropTypes.string.isRequired,
