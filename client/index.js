@@ -13,14 +13,13 @@ import {
   Route,
 } from 'react-router-dom';
 import Auth from './components/Auth';
-import Trip from './components/Trip';
 import Header from './components/Header';
 
-const TRIP_QUERY = gql`
+const USER_QUERY = gql`
   {
-    trips {
-      name
+    user {
       id
+      email
     }
   }
 `;
@@ -46,12 +45,13 @@ const App = () => (
       <h1>
         Hello Parcel
       </h1>
-      <Query query={TRIP_QUERY}>
+
+      <Query query={USER_QUERY}>
         {({ loading, error, data }) => {
           if (loading) return <div>Fetching</div>;
           if (error) return <div>Error</div>;
 
-          return data.trips.map(trip => <Trip name={trip.name} key={trip.id} />);
+          return <div>{data.user.email}</div>;
         }}
       </Query>
     </ApolloProvider>

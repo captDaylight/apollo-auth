@@ -1,6 +1,7 @@
 # import Trip from "./generated/prisma.graphql"
 
 type Query {
+  user: User!
   trips: [Trip!]!
 }
 

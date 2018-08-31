@@ -6,7 +6,7 @@ async function getUserId(context) {
   if (!token) throw new Error('not_authenticated');
 
   const { userId } = jwt.verify(token, process.env.AUTH_SECRET);
-  const userExists = await context.prisma.exists.User({ id: userId });
+  const userExists = await context.db.exists.User({ id: userId });
 
   if (!userExists) throw new Error('not_authenticated');
 
