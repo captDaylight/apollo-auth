@@ -53,7 +53,7 @@ class Auth extends PureComponent {
           onCompleted={(res) => { console.log('complete', res); }}
         >
           {
-            mutation => (
+            (mutation, { error }) => (
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -94,6 +94,7 @@ class Auth extends PureComponent {
                 />
 
                 <button type="submit">Submit</button>
+                { error && <div>ERROR Authenticating</div>}
               </form>
             )
           }
