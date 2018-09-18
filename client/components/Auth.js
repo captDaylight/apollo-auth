@@ -31,6 +31,10 @@ class Auth extends PureComponent {
           mutation={isSignup ? SIGNUP : LOGIN}
           variables={isSignup ? { name, email, password } : { email, password }}
           onCompleted={(res) => { console.log('complete', res); }}
+          refetchQueries={(fetchResult) => {
+            console.log('fetch result', fetchResult);
+            return [{ query: GET_USER }];
+          }}
         >
           {
             (mutation, { error }) => (
