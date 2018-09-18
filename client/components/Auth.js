@@ -1,27 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutation($name: String!, $email: String!, $password: String!) {
-    signup(name: $name, email: $email, password: $password) {
-      id
-      name
-      email
-    }
-  }
-`;
-
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      id
-      name
-      email
-    }
-  }
-`;
+import { SIGNUP, LOGIN } from '../apollo/queries';
 
 class Auth extends PureComponent {
   constructor(props) {
@@ -48,7 +28,7 @@ class Auth extends PureComponent {
         <h1>{isSignup ? 'Sign Up' : 'Log In'}</h1>
 
         <Mutation
-          mutation={isSignup ? SIGNUP_MUTATION : LOGIN_MUTATION}
+          mutation={isSignup ? SIGNUP : LOGIN}
           variables={isSignup ? { name, email, password } : { email, password }}
           onCompleted={(res) => { console.log('complete', res); }}
         >

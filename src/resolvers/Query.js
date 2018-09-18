@@ -8,11 +8,6 @@ async function user(parent, args, context, info) {
   }, info);
 }
 
-function trips(parent, args, context, info) {
-  return context.db.query.trips({}, info);
-}
-
 module.exports = {
   user,
-  trips,
 };

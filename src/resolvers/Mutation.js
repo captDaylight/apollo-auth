@@ -35,65 +35,8 @@ function logout(parent, args, context) {
   return { message: 'success' };
 }
 
-function createTrip(parent, args, context, info) {
-  const userId = getUserId(context);
-
-  return context.db.mutation.createTrip({
-    data: {
-      name: args.name,
-      description: args.description,
-      organizers: { connect: [{ id: userId }] },
-      travelers: { connect: [{ id: userId }] },
-    },
-  }, info);
-}
-
-function onlyNewTravelers(travelers) {
-  return userId => travelers.findIndex(traveler => traveler.id === userId) === -1;
-}
-
-async function addUsersToTrip(parent, args, context, info) {
-  // in the future, it could be user emails. if email doesn't exist then create
-  // user and then add to the trip.
-
-  // at some point nested mutations, create users when adding missing ones:
-  // https://www.prisma.io/docs/reference/prisma-api/concepts-utee3eiquo/#transactional-mutations
-  const userId = getUserId(context);
-
-  const trip = await context.db.query.trip(
-    { where: { id: args.tripId } },
-    `
-      {
-        organizers { id }
-        travelers { id }
-      }
-    `,
-  );
-
-  if (!trip) throw new Error('no_trip');
-
-  if (trip.organizers.findIndex(organizer => organizer.id === userId) > -1) {
-    const ids = args.userIds
-      .filter(onlyNewTravelers(trip.travelers))
-      .map(id => ({ id }));
-
-    return context.db.mutation.updateTrip({
-      where: {
-        id: args.tripId,
-      },
-      data: {
-        travelers: { connect: ids },
-      },
-    }, info);
-  }
-
-  throw new Error('no_permission');
-}
-
 module.exports = {
   signup,
   login,
   logout,
-  createTrip,
-  addUsersToTrip,
 };

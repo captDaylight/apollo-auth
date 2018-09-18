@@ -2,12 +2,9 @@
 
 type Query {
   user: User!
-  trips: [Trip!]!
 }
 
 type Mutation {
-  createTrip(name: String!, description: String!): Trip!
-  addUsersToTrip(userIds: [ID!]!, tripId: ID!): Trip
   signup(name: String!, email: String!, password: String!): User
   login(email: String!, password: String!): User
   logout: Message
@@ -17,8 +14,6 @@ type User {
   id: ID!
   email: String!
   name: String
-  trips: [Trip!]!
-  tripsOrganizing: [Trip!]!
 }
 
 type Message {

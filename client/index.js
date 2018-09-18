@@ -7,22 +7,13 @@ import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
 import { withClientState } from 'apollo-link-state';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import gql from 'graphql-tag';
 import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
 import Auth from './components/Auth';
 import Header from './components/Header';
-
-const USER_QUERY = gql`
-  {
-    user {
-      id
-      email
-    }
-  }
-`;
+import { GET_USER } from './apollo/queries';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
@@ -41,19 +32,7 @@ const App = () => (
       <Header />
       <Route path="/signup" render={() => <Auth type="SIGNUP" />} />
       <Route path="/login" render={() => <Auth type="LOGIN" />} />
-
-      <h1>
-        Hello Parcel
-      </h1>
-
-      <Query query={USER_QUERY}>
-        {({ loading, error, data }) => {
-          if (loading) return <div>Fetching</div>;
-          if (error) return <div>Error</div>;
-
-          return <div>{data.user.email}</div>;
-        }}
-      </Query>
+      apollo auth
     </ApolloProvider>
   </Router>
 );
